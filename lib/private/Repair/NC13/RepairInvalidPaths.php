@@ -60,7 +60,8 @@ class RepairInvalidPaths implements IRepairStep {
 		);
 
 		//select f.path, f.parent,p.path from oc_filecache f inner join oc_filecache p on f.parent=p.fileid and p.path!='' where f.path != p.path || '/' || f.name;
-		$query = $builder->select('f.fileid', 'f.path', 'p.path AS parent_path', 'f.name', 'f.parent', 'f.storage')
+		$query = $builder->select('f.fileid', 'f.path', 'f.name', 'f.parent', 'f.storage')
+			->selectAlias('p.path', 'parent_path')
 			->from('filecache', 'f')
 			->innerJoin('f', 'filecache', 'p', $builder->expr()->andX(
 				$builder->expr()->eq('f.parent', 'p.fileid'),
